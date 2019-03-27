@@ -1,0 +1,9 @@
+.idea/
+build/
+out/
+.vertx/
+*.iml
+.vscode/
+tmp/
+.gradle/
+.attach*
