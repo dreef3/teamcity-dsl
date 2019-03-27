@@ -1,0 +1,60 @@
+= Docker
+
+== Rules
+
+Each service uses Docker for build and deployment.
+
+=== Dockerfile
+
+Docker file used to build and deploy a service itself is named `Dockerfile` and placed in the root of the repository.
+
+If a service requires use of more than one container then each of them is defined in it's own docker file.
+
+Additional docker files are named `<label>.Dockerfile` and placed in the root of the service repository.
+
+Yes
+
+----
+Dockerfile
+migrations.Dockerfile
+----
+
+No
+
+----
+migrations-Dockerfile
+----
+
+Docker file is composed as multistage build.
+
+Docker file does not require any build args except defined below.
+
+Docker file defines all exposed ports of the service with `EXPOSE`.
+
+`FROM` statement uses either `${REGISTRY}` or `${PUBLIC_REGISTRY}` build args to reference images.
+
+`FROM` statement doesn't refer to public Docker registry images.
+
+=== Build Args
+
+* `COMMIT_HASH` - see Labels below
+
+* `REPO_NAME` - see Labels below
+
+* `REGISTRY` - private Docker registry address in the form `host:port`
+
+* `PUBLIC_REGISTRY` - public Docker registry address in the form `host:port`
+
+=== Labels
+
+Docker file includes mandatory labels
+
+* `maintainer` - main mantainer of the service in the form `Name LastName <email@addrress>`
+* `saas.crm.commitHash` - hash of git commit image was built from. Passed via `COMMIT_HASH` build arg
+* `saas.crm.repository` - git repository image was built from in the form `<project>/<repository>`. Passed via `REPO_NAME` build arg
+
+=== Build
+
+Service is built with `docker build` command.
+
+Service does not require additional steps for a build.

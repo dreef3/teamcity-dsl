@@ -1,0 +1,97 @@
+= Configuration
+
+Service uses two formats of configuration:
+1. JSON files
+2. Environment variables
+
+JSON files *never* contain secret values such as access tokens and passwords.
+
+Each value in JSON file can be overriden by an environment variable.
+
+Path to a key in JSON file is translated into the name of environment variable as follows:
+
+* `camelCase` to `SNAKE_CASE`
+* `{"nested": {"key": "value"}}` to `NESTED__KEY=value`
+
+Service has multiple JSON files for each environment. It chooses a file to use at startup based on `APP_ENV` environment variable.
+
+JSON format doesn't contain configuration parameters related to external systems. Instead, it leaves them to be defined by environment variables.
+
+Yes
+
+----
+default.json
+{
+  "authorizeEndpoint": ""
+}
+
+AUTHORIZE_ENDPOINT=https://id.example.com/authorize
+----
+
+No
+
+----
+prod.json
+{
+  "authorizeEndpoint": "https://id.example.com/authorize"
+}
+----
+
+However service includes a complete JSON format configuration for local development.
+
+== Environment Variables
+
+At runtime service is configured with environment variables per 12-factor app methodology.
+
+Environment variables are written UPPER_SNAKE_CASE.
+
+Service own environment variables have a common prefix defined in `env.prefix` label in the Docker image.
+
+Yes
+
+----
+SITES__IMAGE__PATH
+----
+
+No
+
+----
+IMAGE_PATH
+----
+
+Service uses common variable names where possible
+
+Yes
+
+----
+DB_NAME="sites"
+----
+
+No
+
+----
+SITES__DB__NAME="sites"
+----
+
+Below is a list of commonly used environment variables.
+
+`SERVICE_VARIANT`
+
+`APP_ENV`
+
+`STACK_ENV`
+
+`DB_NAME`
+
+`DB_HOST`
+
+`DB_USER`
+
+`DB_PASSWORD`
+
+`DB_SCHEMA`
+
+`VAULT_ROLE_ID`
+
+`VAULT_SECRET_ID`
+

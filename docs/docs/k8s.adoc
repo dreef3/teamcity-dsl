@@ -1,0 +1,29 @@
+= Kubernetes
+
+== Helm
+
+Service deployed to k8s using a Helm chart.
+
+Helm chart placed into a `charts/<service_name>` directory in the root of repository.
+
+Helm chart supports a local deployment mode with a `--set dev=true` switch.
+
+=== Common variables
+
+Below is a list of the commonly used variables.
+
+`ingress.enabled` - whether to enable service ingress
+
+`service.type` - type of the Service resource. One of NodePort, ClusterIP
+
+== ConfigMap
+
+Environment variables to configure a service deployed separately from the chart in a ConfigMap with a name `<service_name>-<service_variant>-config`.
+
+Common environment variables deployed in a ConfigMap with a name `<app_env>-config`.
+
+== Secrets
+
+Environment variables that contain secrets deployed separately from the chart in a Secret resource with a name `<service_name>-<service_variant>-secrets`.
+
+Common environment variables deployed in a Secret with a name `<app_env>-secrets`.
